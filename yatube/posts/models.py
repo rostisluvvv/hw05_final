@@ -34,7 +34,6 @@ class Post(PubDateModels):
         blank=True,
         null=True,
         verbose_name='Группа',
-        help_text='Группа, к которой будет относиться пост'
     )
     image = models.ImageField('image', upload_to='posts/', blank=True)
 
@@ -63,16 +62,20 @@ class Comment(PubDateModels):
 
 
 class Follow(models.Model):
-    # чел который подписывается
     user = models.ForeignKey(
         User,
         related_name='follower',
         on_delete=models.CASCADE
     )
-    # чел на которого подписываюсь
     author = models.ForeignKey(
         User,
         related_name='following',
         on_delete=models.CASCADE,
         null=True
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'author'],
+                                    name='unique_follow')
+        ]
