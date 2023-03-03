@@ -132,7 +132,7 @@ def profile_follow(request, username):
         user=request.user, author=author
     )
     if request.user != author and not is_subscribed:
-        follow_obj.create()
+        follow_obj
     return redirect('posts:profile', username=username)
 
 
