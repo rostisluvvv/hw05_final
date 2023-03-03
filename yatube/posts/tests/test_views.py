@@ -289,6 +289,7 @@ class FollowTests(TestCase):
         )
 
     def test_authorized_client_can_follow(self):
+        self.follow.delete()
         follow_count = Follow.objects.count()
         self.client_follower.post(reverse(
             'posts:profile_follow',
