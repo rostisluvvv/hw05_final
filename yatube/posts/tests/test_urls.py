@@ -96,7 +96,6 @@ class PostsURLTests(TestCase):
         response = self.guest_client.get('/unexisting_page/')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-
     def test_comment_added_only_auth_authorized_client(self):
         count_comment = Comment.objects.count()
         form_data = {
