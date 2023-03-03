@@ -1,5 +1,6 @@
 import shutil
 import tempfile
+from http import HTTPStatus
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
@@ -8,7 +9,7 @@ from django.urls import reverse
 from django import forms
 from django.conf import settings
 
-from ..models import Post, Group, Comment, Follow
+from ..models import Post, Group, Follow
 from ..forms import PostForm
 
 
@@ -191,18 +192,6 @@ class PostPagesTest(TestCase):
         form = response.context['form']
         self.assertIsInstance(form, PostForm)
 
-    def test_comment_added_only_auth_authorized_client(self):
-        count_comment = Comment.objects.count()
-        form_data = {
-            'text': 'test comment 2'
-        }
-        response = self.client.post(reverse(
-            'posts:add_comment',
-            kwargs={'post_id': self.post.pk}),
-            data=form_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Comment.objects.count(), count_comment)
-
 
 class PaginatorViewTest(TestCase):
     TEST_OF_POST: int = 13
@@ -294,6 +283,11 @@ class FollowTests(TestCase):
             group=self.group
         )
 
+        self.follow = Follow.objects.create(
+            user=self.user_follower,
+            author=self.user_following
+        )
+
     def test_authorized_client_can_follow(self):
         follow_count = Follow.objects.count()
         self.client_follower.post(reverse(
@@ -306,18 +300,14 @@ class FollowTests(TestCase):
         self.client_follower.post(reverse(
             'posts:profile_unfollow',
             kwargs={'username': self.user_following.username}))
-        self.assertEqual(Follow.objects.count(), follow_count)
+        self.assertEqual(Follow.objects.count(), follow_count - 1)
 
     def test_new_post_appears_in_subscribers(self):
-
-        Follow.objects.create(
-            user=self.user_follower,
-            author=self.user_following
-        )
         response = self.client_follower.post(reverse('posts:follow_index'))
         self.assertEqual(response.context['page_obj'][0],
                          self.post)
 
+    def test_new_post_not_appears_in_unsubscribers(self):
         response = self.client_following.post(reverse('posts:follow_index'))
         self.assertEqual(len(response.context['page_obj']),
                          self.COUNT_POST)

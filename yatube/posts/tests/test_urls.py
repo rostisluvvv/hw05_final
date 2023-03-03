@@ -2,8 +2,9 @@ from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
+from django.urls import reverse
 
-from ..models import Post, Group
+from ..models import Post, Group, Comment
 
 
 User = get_user_model()
@@ -94,3 +95,16 @@ class PostsURLTests(TestCase):
     def test_unexisting_page(self):
         response = self.guest_client.get('/unexisting_page/')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+
+    def test_comment_added_only_auth_authorized_client(self):
+        count_comment = Comment.objects.count()
+        form_data = {
+            'text': 'test comment 2'
+        }
+        response = self.client.post(reverse(
+            'posts:add_comment',
+            kwargs={'post_id': self.post.pk}),
+            data=form_data)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(Comment.objects.count(), count_comment)

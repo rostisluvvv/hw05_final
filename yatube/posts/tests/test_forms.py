@@ -75,7 +75,8 @@ class PostCreateFormTests(TestCase):
             Post.objects.filter(
                 author=self.user,
                 text='Тестовое описание поста',
-                group=self.post.group.pk
+                group=self.post.group.pk,
+                image=self.post.image
             )
         )
 
