@@ -34,6 +34,7 @@ class Post(PubDateModels):
         blank=True,
         null=True,
         verbose_name='Группа',
+        help_text='Выберите группу'
     )
     image = models.ImageField('image', upload_to='posts/', blank=True)
 
