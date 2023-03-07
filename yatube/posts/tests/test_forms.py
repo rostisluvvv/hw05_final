@@ -108,6 +108,11 @@ class CommentFormTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
 
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+
     def setUp(self):
         self.user = User.objects.create_user(username='NoName')
         self.guest_client = Client()
