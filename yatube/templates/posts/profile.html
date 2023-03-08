@@ -32,10 +32,7 @@
 {% for post in page_obj %}
 {% include 'posts/includes/single_post.html' %}
 
-{% if post.group %}
-<p><a href="{% url 'posts:group_list' post.group.slug %}">все записи
-  группы</a></p>
-{% endif %}
+
 {% if not forloop.last %}
 <hr>
 {% endif %}
