@@ -10,6 +10,7 @@ urlpatterns = [
     path('auth/', include('users.urls')),
     path('auth/', include('django.contrib.auth.urls')),
     path('about/', include('about.urls', namespace='about')),
+    path('chat/', include('chat.urls', namespace='chat')),
 ]
 
 handler404 = 'core.views.page_not_found'

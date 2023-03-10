@@ -18,8 +18,9 @@ ALLOWED_HOSTS = [
     'rostisluvvv.pythonanywhere.com',
 ]
 
-
 INSTALLED_APPS = [
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,11 +31,14 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
+    'chat.apps.ChatConfig',
 
+    'channels',
     'sorl.thumbnail',
-    'debug_toolbar'
+    'debug_toolbar',
 
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,3 +139,13 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 COUNT_POSTS: int = 10
+
+
+ASGI_APPLICATION = "yatube.asgi.application"
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}
