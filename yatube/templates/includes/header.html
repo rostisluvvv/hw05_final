@@ -1,52 +1,81 @@
 {% load static %}
-<header>
-  <nav class="navbar navbar-light" style="background-color: lightskyblue">
-    <div class="container">
+
+<header class="p-3 bg-dark text-white">
+  <div class="container">
+
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
       <a class="navbar-brand" href="{% url 'posts:index' %}">
-        <img src="{% static 'img/logo.png' %}" width="30" height="30"
+        <img src="{% static 'img/logo_yatube.png' %}" width="35" height="35"
              class="d-inline-block align-top" alt="">
-        <span style="color:red">Ya</span>tube
+        <span style="color:red"></span>
       </a>
+
       {% with request.resolver_match.view_name as view_name %}
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <a class="nav-link {% if view_name  == 'about:author' %}active{% endif %}"
-             href="{% url 'about:author' %}">Об авторе</a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li>
+          <a href="/" class="nav-link px-2 text-white">
+            Home
+          </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link {% if view_name  == 'about:tech' %}active{% endif %}"
-             href="{% url 'about:tech' %}">Технологии</a>
+
+        <li>
+          <a href="/" class="nav-link px-2 text-white">
+            chat
+          </a>
+        </li>
+
+
+        <li><a href="{% url 'about:tech' %}"
+               class="nav-link px-2  text-white ">Технологии</a></li>
         </li>
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link {% if view_name  == 'posts:post_create' %}active{% endif %}"
-             href="{% url 'posts:post_create' %}">Новая запись</a>
+          <a class="nav-link text-white"  href="{% url 'posts:post_create' %}">Новая запись</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link link-light {% if view_name  == 'users:password_change' %}active{% endif %}"
+                <li class="nav-item">
+          <a class="nav-link link-light text-white"
              href="{% url 'users:password_change' %}">Изменить пароль</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link link-light "
-             href="{% url 'users:logout' %}">Выйти</a>
+        <li><a href="{% url 'about:author' %}"
+               class="nav-link px-2  text-white">About</a>
         </li>
-        <li>
-          Пользователь: {{ user.username }}
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link link-light {% if view_name  == 'users:login' %}active{% endif %} "
-             href="{% url 'users:login' %}">Войти</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link link-light {% if view_name  == 'users:signup' %}active{% endif %} "
-             href="{% url 'users:signup' %}">Регистрация</a>
-        </li>
-        {% endif %}
+
+
       </ul>
+      {% endif %}
       {% endwith %}
 
+
+      {% if request.user.is_authenticated %}
+
+      <div class="text-end">
+        <a href="{% url 'users:logout' %}">
+          <button type="button" class="btn btn-outline-light me-2">
+            Logout
+          </button>
+        </a>
+        {% else %}
+
+        <a href="{% url 'users:login' %}">
+          <button type="button" class="btn btn-outline-light me-2">
+            Login
+          </button>
+        </a>
+
+          <a class="nav-link link-light" href="{% url 'users:signup' %}">
+
+          <button type="button" class="btn btn-warning">Sign-up</button>
+          </a>
+
+
+
+        {% endif %}
+      </div>
     </div>
-  </nav>
+  </div>
 </header>
+
+
+
 
