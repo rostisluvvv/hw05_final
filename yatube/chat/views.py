@@ -14,5 +14,6 @@ def room(request):
 
     context = {
         'messages': data,
+
     }
     return render(request, 'chat/room.html', context)
